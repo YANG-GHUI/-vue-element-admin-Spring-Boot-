@@ -19,8 +19,6 @@ import lombok.experimental.Accessors;
  * @since 2022-11-25
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 @TableName("tb_article")
 @ApiModel(value="Article对象", description="文章")
 public class Article implements Serializable {

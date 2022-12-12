@@ -19,8 +19,6 @@ import lombok.experimental.Accessors;
  * @since 2022-11-26
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 @TableName("tb_sys_log")
 @ApiModel(value="SysLog对象", description="系统日志")
 public class SysLog implements Serializable {
