@@ -31,6 +31,9 @@ public class Article implements Serializable {
     @TableId(value = "id", type = IdType.ID_WORKER_STR)
     private String id;
 
+    @ApiModelProperty(value = "用户id")
+    private String userId;
+
     @ApiModelProperty(value = "文章标题")
     private String title;
 

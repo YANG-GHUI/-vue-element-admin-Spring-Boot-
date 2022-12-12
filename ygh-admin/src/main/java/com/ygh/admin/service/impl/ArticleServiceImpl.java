@@ -3,9 +3,12 @@ package com.ygh.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ygh.admin.entity.Article;
+import com.ygh.admin.entity.User;
 import com.ygh.admin.mapper.ArticleMapper;
 import com.ygh.admin.service.ArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ygh.admin.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -23,6 +26,9 @@ import java.util.Map;
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
 
+    @Autowired
+    private UserService userService;
+
     //分页查询文章
     @Override
     public Map<String, Object> pageArticle(long page, long limit) {
@@ -37,6 +43,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         long current = pageArticle.getCurrent();
         boolean hasNext = pageArticle.hasNext();//是否有下一页
         boolean hasPrevious = pageArticle.hasPrevious();//是否有下一页
+        for (Article record : records) {
+            User user = userService.getById(record.getUserId());
+            // 方便前端展示为用户名
+            record.setUserId(user.getName());
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("size", size);
         map.put("pages", pages);

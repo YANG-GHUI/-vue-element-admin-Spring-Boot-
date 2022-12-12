@@ -50,7 +50,8 @@ public class LoginController {
                 String userIp = IpUtil.getIpAddr(request);
                 //将用户信息存入redis
                 redisTemplate.opsForValue().set("userInfo", user, 24 * 60, TimeUnit.MINUTES);
-                redisTemplate.opsForValue().set(user.getUsername() + ":userIp", userIp, 24 * 60, TimeUnit.MINUTES);
+                redisTemplate.opsForValue().set(user.getUsername() + ":userIp", userIp, 24 * 60,
+                        TimeUnit.MINUTES);
                 String token = JwtUtils.getJwtToken(user.getId(), username);
                 return R.ok().data("token", token);
             } else {
@@ -77,7 +78,7 @@ public class LoginController {
     @ApiOperation("用户登出")
     @PostMapping("/logout")
     public R logout() {
-        redisTemplate.opsForValue().set("userInfo", "", 1, TimeUnit.SECONDS);
+        redisTemplate.delete("userInfo");
         return R.ok().data("token", "");
     }
 }

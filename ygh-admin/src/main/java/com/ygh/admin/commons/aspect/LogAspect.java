@@ -4,7 +4,6 @@ import com.ygh.admin.commons.annotation.Log;
 import com.ygh.admin.entity.SysLog;
 import com.ygh.admin.entity.User;
 import com.ygh.admin.service.SysLogService;
-import com.ygh.admin.service.UserService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -26,9 +25,6 @@ public class LogAspect {
 
     @Autowired
     private SysLogService logService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -62,6 +58,7 @@ public class LogAspect {
     }
 
     private void saveLog(ProceedingJoinPoint joinPoint, long time) {
+        // 获取方法签名
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         SysLog sysLog = new SysLog();

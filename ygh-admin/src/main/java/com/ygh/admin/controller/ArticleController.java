@@ -1,19 +1,18 @@
 package com.ygh.admin.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ygh.admin.commons.R;
 import com.ygh.admin.commons.annotation.Log;
+import com.ygh.admin.commons.utils.JwtUtils;
 import com.ygh.admin.entity.Article;
 import com.ygh.admin.service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -32,28 +31,6 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
-
-//    @Cacheable(key = "'selectArticleByNew'", value = "article")
-//    @ApiOperation("查询所有文章")
-//    @GetMapping
-//    public R getArticleByNew() {
-//        QueryWrapper<Article> wrapper = new QueryWrapper<>();
-//        wrapper.eq("status", 1);
-//        wrapper.orderByAsc("sort").orderByDesc("gmt_create");
-//        List<Article> articleList = articleService.list(wrapper);
-//        return R.ok().data("list", articleList);
-//    }
-//
-//    @Cacheable(key = "'selectArticleByLast'", value = "article")
-//    @ApiOperation("查询所有文章（往期）")
-//    @GetMapping("/getArticleByLast")
-//    public R getArticleByLast() {
-//        QueryWrapper<Article> wrapper = new QueryWrapper<>();
-//        wrapper.eq("status", 1);
-//        wrapper.orderByAsc("gmt_create");
-//        List<Article> articleList = articleService.list(wrapper);
-//        return R.ok().data("list", articleList);
-//    }
 
     @ApiOperation("分页查询所有文章")
     @GetMapping("/pageArticle/{page}/{limit}")
@@ -86,7 +63,10 @@ public class ArticleController {
     @ApiOperation("添加文章")
     @PostMapping
     public R addArticle(@ApiParam(name = "article", value = "文章对象")
-                        @RequestBody Article article) {
+                        @RequestBody Article article,
+                        HttpServletRequest request) {
+        String userId = JwtUtils.getMemberIdByJwtToken(request);
+        article.setUserId(userId);
         boolean flag = articleService.save(article);
         return flag ? R.ok() : R.error();
     }
@@ -95,7 +75,10 @@ public class ArticleController {
     @ApiOperation("修改文章")
     @PutMapping("/updateArticle")
     public R updateArticle(@ApiParam(name = "article", value = "文章对象")
-                           @RequestBody Article article) {
+                           @RequestBody Article article,
+                           HttpServletRequest request) {
+        String userId = JwtUtils.getMemberIdByJwtToken(request);
+        article.setUserId(userId);
         boolean flag = articleService.updateById(article);
         return flag ? R.ok() : R.error();
     }
