@@ -51,8 +51,8 @@ aliyun:
   oss:
     file:
       endpoint: oss-cn-wulanchabu.aliyuncs.com
-      keyid: LTAI5tPgN29EEJFwiqZsjiJN
-      keysecret: TupU26hcFkHEr1bAfL91mX6xG5IkmJ
+      keyid: 
+      keysecret: 
       #bucket可以在控制台创建，也可以使用java代码创建
-      bucketname: edu-ygh
+      bucketname: 
 
